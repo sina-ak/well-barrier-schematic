@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Perforation from '../perforation/perforation';
 
-const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerforation, middleOfShapeX, middleOfShapeY, x, offsetY }) => {
+const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerforation, middleOfShapeX, middleOfShapeY, totalWellDepth, verticalWellDepth, curveDegree, x, offsetY }) => {
     const labelRef = useRef(null);
     const [labelWidth, setLabelWidth] = useState(0);
     const triangleSize = 30;
@@ -12,6 +12,7 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
     const endX = x;
     const startY = startOfTotalDepth + offsetY;
     const endY = startY + endOfTotalDepth;
+    const lineSize = endOfTotalDepth - startOfTotalDepth;
     const offsetCasings = 2 * (middleOfShapeX - x);
     const vertical = true;
     let leftPerforations = [];
@@ -48,6 +49,43 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
         trianglePoints1 = `${endX - triangleSize},${endY} ${endX},${endY - 5 - triangleSize} ${endX},${endY}`;
         trianglePoints2 = `${endX - triangleSize},${endY + offsetCasings} ${endX},${endY + 5 + triangleSize + offsetCasings} ${endX},${endY + offsetCasings - 9}`;
     }
+    const curvePoint = [];
+    const radius = 200; // Radius of the curve
+    const curveDegrees = 90; // Degrees of the curve
+    const steps = 2; // Degrees to move per step for the curve
+
+    // Start with the vertical line
+    curvePoint.push(`M${startX + offsetCasings + 500},${startY}`);
+    curvePoint.push(`L${startX + offsetCasings + 500},${startY + verticalWellDepth}`);
+
+    // Calculate the curved section
+    let lastX = startX + offsetCasings + 500;
+    let lastY = startY + verticalWellDepth;
+    let PointAfterCurveY = 0;
+    let PointAfterCurveX = 0;
+    for (let angle = 0; angle <= curveDegrees; angle += steps) {
+        const thetaRad = (angle * Math.PI) / 180; // Convert angle to radians
+
+        // Calculate the x and y coordinates for the curve
+        PointAfterCurveY = lastY + radius * Math.sin(thetaRad);
+        PointAfterCurveX = lastX + radius * (1 - Math.cos(thetaRad));
+        curvePoint.push(`L${PointAfterCurveX},${PointAfterCurveY}`);
+    }
+
+    // Calculate endpoint for the straight line after the curve
+    const endAngleRad = ((curveDegrees) * Math.PI) / 180; // Convert total curve angle to radians
+    const straightLineLength = totalWellDepth - verticalWellDepth - radius; // Adjust as necessary
+    const endStraightY = lastX  + (straightLineLength * Math.sin(endAngleRad)) ;
+    const endStraightX = lastY  + (straightLineLength*(1 - Math.cos(endAngleRad))) ;
+
+    // Add the straight line
+    curvePoint.push(`L${endStraightX},${endStraightY}`);
+
+
+
+
+
+    //-------------------------
     return (
 
         <g>
@@ -57,6 +95,7 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
 
 
             <React.Fragment>
+
                 <line x1={startX} y1={startY} x2={endX} y2={endY} stroke="#999292" strokeWidth="16" />
                 <text ref={labelRef} x={startX - labelOffset - labelWidth} y={endY - 10} fontSize="28">
                     {label}
@@ -73,6 +112,7 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
 
             {/* casing line2 */}
             <React.Fragment>
+                <path d={curvePoint.map((item) => item)} stroke="#999292" strokeWidth="16" fill="none" />
                 <line x1={startX + offsetCasings} y1={startY} x2={endX + offsetCasings} y2={endY} stroke="#999292" strokeWidth="16" />
                 <text ref={labelRef} x={startX + offsetCasings + labelOffset} y={endY - 10} fontSize="28">
                     {label}

@@ -18,13 +18,13 @@ const WellComponent = () => {
   const totalWellDepth = 2500; //total of well depth => vertical depth + horizontal depth 
   const closestCasingLineX = 670; //inner casing position
   const sapaceBetweenCasings = 60;
-  const curveDegree = 90;
+  const curveDegree = 0;
   const offsetY = 450; // space between top of screen and end of well-cap
 
 
   const casings = [
     { startOfTotalDepth: 0, endOfTotalDepth: 1500, label: 'perforation', show: true, hasPerforation: true, middleOfShapeX: middleOfShapeX, middleOfShapeY: middleOfShapeY },
-    { startOfTotalDepth: 0, endOfTotalDepth: 400, label: 'Surface Casing', show: true, hasPerforation: false, middleOfShapeX: middleOfShapeX, middleOfShapeY: middleOfShapeY },
+    { startOfTotalDepth: 0, endOfTotalDepth: 400, label: 'Surface Casing', show: false, hasPerforation: false, middleOfShapeX: middleOfShapeX, middleOfShapeY: middleOfShapeY },
     { startOfTotalDepth: 200, endOfTotalDepth: 900, label: 'Intermediate Casing', show: false, hasPerforation: false, middleOfShapeX: middleOfShapeX, middleOfShapeY: middleOfShapeY }
   ];
   const packers = [
@@ -42,13 +42,13 @@ const WellComponent = () => {
   let remainSegment = <use href="#remain-part" x="0" y="0" width={totalZoneWidth} height={offsetY + verticalWellDepth}/>;
   
   if (totalWellDepth > verticalWellDepth) {
-    for (let i = 0; i < (curveDegree); i++) {
+    for (let i = 0; i < (curveDegree*3); i++) {
       croppedSegments.push(
-        <use href="#cropped-part" x={middleOfShapeX - (totalWellWidth / 2)} y={offsetY + verticalWellDepth} width={totalWellWidth} height="10" transform={`rotate(${-(i)} ${middleOfShapeX + (totalWellWidth / 2) - 80} ${offsetY + verticalWellDepth + 50})`} />
+        <use href="#cropped-part" x={middleOfShapeX - (totalWellWidth / 2)} y={offsetY + verticalWellDepth} width={totalWellWidth} height="3" transform={`rotate(${-(i/3)} ${middleOfShapeX + (totalWellWidth / 2) - 50} ${offsetY + verticalWellDepth + 10})`} />
       )
     }
     rotatedSegment = (
-      <use href="#rotated-part" x={middleOfShapeX - (totalWellWidth / 2)} y={offsetY + verticalWellDepth} width={totalWellWidth} height={totalWellDepth - verticalWellDepth} transform={`rotate(${-curveDegree} ${middleOfShapeX + (totalWellWidth / 2) -80} ${offsetY + verticalWellDepth + 50})`} />
+      <use href="#rotated-part" x={middleOfShapeX - (totalWellWidth / 2)} y={offsetY + verticalWellDepth} width={totalWellWidth} height={totalWellDepth - verticalWellDepth} transform={`rotate(${-curveDegree} ${middleOfShapeX + (totalWellWidth / 2) -50} ${offsetY + verticalWellDepth +10})`} />
     );
   }
 
@@ -95,7 +95,7 @@ const WellComponent = () => {
       {generatedSVG}
       </symbol>
       {rotatedSegment}
-      <symbol id="remain-part" viewBox={`0 0 ${totalZoneWidth} ${offsetY + verticalWellDepth}`}>
+      <symbol id="remain-part" viewBox={`0 0 ${totalZoneWidth} ${offsetY + verticalWellDepth + 800}`}>
       {generatedSVG}
       </symbol>
       {remainSegment}

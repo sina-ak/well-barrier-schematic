@@ -56,23 +56,12 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
             {/* casing line1 */}
 
 
-            {vertical ? (
-                <React.Fragment>
-                    <line x1={startX} y1={startY} x2={endX} y2={endY} stroke="#999292" strokeWidth="16" />
-                    <text ref={labelRef} x={startX - labelOffset - labelWidth} y={endY - 10} fontSize="28">
-                        {label}
-                    </text>
-                </React.Fragment>
-
-            ) :
-                (
-                    <React.Fragment>
-                        <line x1={startX} y1={startY} x2={endX} y2={endY} stroke="#999292" strokeWidth="16" />
-                        <text ref={labelRef} x={endX} y={startY - labelOffset} fontSize="28" transform={`rotate(-90, ${endX}, ${startY - labelOffset})`} >
-                            {label}
-                        </text>
-                    </React.Fragment>
-                )}
+            <React.Fragment>
+                <line x1={startX} y1={startY} x2={endX} y2={endY} stroke="#999292" strokeWidth="16" />
+                <text ref={labelRef} x={startX - labelOffset - labelWidth} y={endY - 10} fontSize="28">
+                    {label}
+                </text>
+            </React.Fragment>
             {hasPerforation ? (
                 <React.Fragment>
                     {leftPerforations.map((item => item))}
@@ -83,23 +72,12 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
             <polygon points={trianglePoints1} fill="#999292" />
 
             {/* casing line2 */}
-
-            {vertical ? (
-                <React.Fragment>
-                    <line x1={startX + offsetCasings} y1={startY} x2={endX + offsetCasings} y2={endY} stroke="#999292" strokeWidth="16" />
-                    <text ref={labelRef} x={startX + offsetCasings + labelOffset} y={endY - 10} fontSize="28">
-                        {label}
-                    </text>
-                </React.Fragment>
-            ) :
-                (
-                    <React.Fragment>
-                        <line x1={startX} y1={startY + offsetCasings} x2={endX} y2={endY + offsetCasings} stroke="#999292" strokeWidth="16" />
-                        <text ref={labelRef} x={endX - labelWidth} y={startY + offsetCasings + labelOffset} fontSize="28" transform={`rotate(-90, ${endX}, ${startY + offsetCasings + labelOffset})`} >
-                            {label}
-                        </text>
-                    </React.Fragment>
-                )}
+            <React.Fragment>
+                <line x1={startX + offsetCasings} y1={startY} x2={endX + offsetCasings} y2={endY} stroke="#999292" strokeWidth="16" />
+                <text ref={labelRef} x={startX + offsetCasings + labelOffset} y={endY - 10} fontSize="28">
+                    {label}
+                </text>
+            </React.Fragment>
 
             <polygon points={trianglePoints2} fill="#999292" />
         </g>

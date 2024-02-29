@@ -42,37 +42,3 @@ const Nipple = ({nipples, middleOfShapeX, middleOfShapeY, offsetY, totalDepth}) 
 }
 
 export default Nipple;
-
-
-// const bigestWidth = 120;
-// let calcWidth = 0;
-// let caclSize = 0;
-// const drawPipes = [];
-// pipeSizes.map((size, index) => {
-//     caclSize += size;
-//     calcWidth = bigestWidth - (index * 10);
-//     if (TRSSSV && caclSize > TRSSSV) {
-//         let drawTRSSSV = (
-//             <React.Fragment key={index + TRSSSV}>
-//                 <rect x={middleOfShapeX - (calcWidth / 2) - 5} y={offsetY + TRSSSV} width={calcWidth + 10} height={30} ry="5" fill="#ed390f" stroke="#000" strokeWidth="3" />
-//                 <rect x={middleOfShapeX - ((calcWidth + 20) / 2)} y={offsetY + TRSSSV + 30} width={calcWidth + 20} height={70} rx="8" fill="#ed390f" stroke="#000" strokeWidth="3" />
-//                 <rect x={middleOfShapeX - (calcWidth / 2) - 5} y={offsetY + TRSSSV + 100} width={calcWidth + 10} height={30} ry="5" fill="#ed390f" stroke="#000" strokeWidth="3" />
-//             </React.Fragment>
-//         )
-//         drawPipes.push(drawTRSSSV)
-//     }
-//     const drawPipe = (
-//         <React.Fragment key={index + caclSize}>
-//             <rect x={middleOfShapeX - (calcWidth / 2)} y={offsetY} width={calcWidth} height={caclSize} ry="5" fill="#8C9BDC" stroke="#5b5b5b" strokeWidth="3" />
-//             <rect x={middleOfShapeX - (calcWidth / 2) - 1} y={offsetY + caclSize} width={calcWidth + 2} height={10} rx="5" fill="#eaac00" stroke="#000" strokeWidth="" />
-//             <rect x={middleOfShapeX - ((calcWidth - 10) / 2)} y={offsetY + caclSize + 10} width={calcWidth - 10} height={10} fill="#eaac00" stroke="#000" strokeWidth="" />
-//         </React.Fragment>
-//     )
-//     drawPipes.push(drawPipe)
-
-// });
-// return (
-//     <g xmlns="http://www.w3.org/2000/svg"  >
-//         {drawPipes.reverse().map(item => item)}
-//     </g>
-// )

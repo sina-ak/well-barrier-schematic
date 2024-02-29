@@ -3,12 +3,12 @@ import LinerHanger from "../linerHanger/linerHanger";
 import TRSSV from "../TRSSV/TRSSV";
 import ExpansionJoint from "../expansion-joint/expansionJoint";
 
-const MainPipe = ({ pipeSizes, TRSSSV, expansionJoint, lineHanger, middleOfShapeX, middleOfShapeY, offsetY, totalDepth }) => {
-
+const MainPipe = ({ pipeSizes, TRSSSV, expansionJoint, lineHanger, middleOfShapeX, offsetY, totalDepth }) => {
     const bigestWidth = 120;
     const tubingOffset = bigestWidth + 20;
     let calcWidth = 0;
     let caclSize = 0;
+
     const drawPipes = [];
     pipeSizes.map((size, index) => {
         caclSize += size;

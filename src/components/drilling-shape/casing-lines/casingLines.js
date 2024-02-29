@@ -40,14 +40,9 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
     }
 
     // Triangle points calculated based on the size of the triangle
-    if (vertical) {
-        trianglePoints1 = `${startX - triangleSize},${endY} ${startX},${endY - triangleSize} ${startX},${endY}`;
-        trianglePoints2 = `${startX + triangleSize + offsetCasings},${endY} ${startX - 5 + offsetCasings},${endY - triangleSize} ${startX - 9 + offsetCasings},${endY}`;
-    }
-    else {
-        trianglePoints1 = `${endX - triangleSize},${endY} ${endX},${endY - 5 - triangleSize} ${endX},${endY}`;
-        trianglePoints2 = `${endX - triangleSize},${endY + offsetCasings} ${endX},${endY + 5 + triangleSize + offsetCasings} ${endX},${endY + offsetCasings - 9}`;
-    }
+    trianglePoints1 = `${startX - triangleSize},${endY} ${startX},${endY - triangleSize} ${startX},${endY}`;
+    trianglePoints2 = `${startX + triangleSize + offsetCasings},${endY} ${startX - 5 + offsetCasings},${endY - triangleSize} ${startX - 9 + offsetCasings},${endY}`;
+
     return (
 
         <g>

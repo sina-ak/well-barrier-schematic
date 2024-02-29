@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import CasingLine from './casing-lines/casingLines';
 import WellCap from './well-cap/wellCap';
 import Packer from './packer/packer';
@@ -8,95 +7,108 @@ import Nipple from './nipple/nipple';
 
 
 
-const WellComponent = () => {
+/////////////////// sample of input json //////////////////
 
+
+// const data = {
+//   "Public": {
+//     TotalWellWidth: 790,
+//     TotalWellDepth: 2500,//total of well depth => vertical depth + horizontal depth 
+//     VerticalWellDepth: 1050,
+//     CurveDegree: 10
+//   },
+//   "Casings": [
+//     { startOfTotalDepth: 0, endOfTotalDepth: 1500, label: 'perforation', show: true, hasPerforation: true },
+//     { startOfTotalDepth: 0, endOfTotalDepth: 400, label: 'Surface Casing', show: true, hasPerforation: false },
+//     { startOfTotalDepth: 200, endOfTotalDepth: 900, label: 'Intermediate Casing', show: false, hasPerforation: false }
+//   ],
+//   "Packers": [
+//       700 , 1200  // packers depth
+//   ],
+//   "MainPipe": [
+//     300, 200, 300, 100, 200, 300, 100, 200, 300, 100 //value of each tubing part (meter)
+//   ],
+//   "Nipples" : [
+//     890, 400 // nipples depth
+//   ],
+//   "LineHangers" : [
+//     1300, 1100  // lineHangers depth 
+//   ],
+//   "TRSSSV" : 550,
+//   "ExpansionJoint":1200,
+
+// }
+
+const WellComponent = ({data}) => {
+
+  
   const totalZoneWidth = 3000;
   const middleOfShapeX = 790;
   const middleOfShapeY = 1550; // test point
-  const totalWellWidth = 790; //total of well width
-  const verticalWellDepth = 1050; //total of well depth => vertical depth + horizontal depth 
-  const totalWellDepth = 2500; //total of well depth => vertical depth + horizontal depth 
   const closestCasingLineX = 670; //inner casing position
   const sapaceBetweenCasings = 60;
-  const curveDegree = 90;
   const offsetY = 450; // space between top of screen and end of well-cap
 
-
-  const casings = [
-    { startOfTotalDepth: 0, endOfTotalDepth: 1500, label: 'perforation', show: true, hasPerforation: true, middleOfShapeX: middleOfShapeX, middleOfShapeY: middleOfShapeY },
-    { startOfTotalDepth: 0, endOfTotalDepth: 400, label: 'Surface Casing', show: true, hasPerforation: false, middleOfShapeX: middleOfShapeX, middleOfShapeY: middleOfShapeY },
-    { startOfTotalDepth: 200, endOfTotalDepth: 900, label: 'Intermediate Casing', show: false, hasPerforation: false, middleOfShapeX: middleOfShapeX, middleOfShapeY: middleOfShapeY }
-  ];
-  const packers = [
-    { packerDepth: 700 },
-    // { packerDepth: 800, totalDepth: 650},
-  ];
-  const mainPipe = [300, 200, 300, 100, 200, 300, 100, 200, 300, 100];
-
-  const TRSSSV = 550; //depth of TRSSSV ( in input added)
-  const expansionJoint = 1200; //depth of expansionJoint ( in input added)
-  const nipples = [890, 400];//depth of Nipples ( in input added)
-  const lineHangers = [1300, 1100];//depth of lineHangers ( in input added)
   let croppedSegments = [];
   let rotatedSegment = null;
-  let remainSegment = <use href="#remain-part" x="0" y="0" width={totalZoneWidth} height={offsetY + verticalWellDepth}/>;
-  
-  if (totalWellDepth > verticalWellDepth) {
-    for (let i = 0; i < (curveDegree); i++) {
+  let remainSegment = <use href="#remain-part" x="0" y="0" width={totalZoneWidth} height={offsetY + data.Public.VerticalWellDepth} />;
+
+  if (data.Public.TotalWellDepth > data.Public.VerticalWellDepth) {
+    for (let i = 0; i < (data.Public.CurveDegree); i++) {
       croppedSegments.push(
-        <use href="#cropped-part" x={middleOfShapeX - (totalWellWidth / 2)} y={offsetY + verticalWellDepth} width={totalWellWidth} height="10" transform={`rotate(${-(i)} ${middleOfShapeX + (totalWellWidth / 2) - 80} ${offsetY + verticalWellDepth + 50})`} />
+        <use key={i} href="#cropped-part" x={middleOfShapeX - (data.Public.TotalWellWidth / 2)} y={offsetY + data.Public.VerticalWellDepth} width={data.Public.TotalWellWidth} height="10" transform={`rotate(${-(i)} ${middleOfShapeX + (data.Public.TotalWellWidth / 2) - 80} ${offsetY + data.Public.VerticalWellDepth })`} />
       )
     }
     rotatedSegment = (
-      <use href="#rotated-part" x={middleOfShapeX - (totalWellWidth / 2)} y={offsetY + verticalWellDepth} width={totalWellWidth} height={totalWellDepth - verticalWellDepth} transform={`rotate(${-curveDegree} ${middleOfShapeX + (totalWellWidth / 2) -80} ${offsetY + verticalWellDepth + 50})`} />
+      <use href="#rotated-part" x={middleOfShapeX - (data.Public.TotalWellWidth / 2)} y={offsetY + data.Public.VerticalWellDepth} width={data.Public.TotalWellWidth} height={data.Public.TotalWellDepth - data.Public.VerticalWellDepth} transform={`rotate(${-data.Public.CurveDegree} ${middleOfShapeX + (data.Public.TotalWellWidth / 2) - 80} ${offsetY + data.Public.VerticalWellDepth })`} />
     );
   }
 
   const generatedSVG = (
     <g>
-          {/* Draw the main pipe */}
-          <MainPipe
-            pipeSizes={mainPipe} TRSSSV={TRSSSV} expansionJoint={expansionJoint} lineHanger={lineHangers} middleOfShapeX={middleOfShapeX} middleOfShapeY={middleOfShapeY} offsetY={offsetY} totalDepth={totalWellDepth}
-          />
-          {/* Draw the Nipples */}
-          <Nipple nipples={nipples.slice().sort((a, b) => a - b)} middleOfShapeX={middleOfShapeX} middleOfShapeY={middleOfShapeY} offsetY={offsetY} totalDepth={totalWellDepth}
-          />
+      {/* Draw the main pipe */}
+      <MainPipe
+        pipeSizes={data.MainPipe} TRSSSV={data.TRSSSV} expansionJoint={data.ExpansionJoint} lineHanger={data.LineHangers} middleOfShapeX={middleOfShapeX} middleOfShapeY={middleOfShapeY} offsetY={offsetY} totalDepth={data.Public.TotalWellDepth}
+      />
+      {/* Draw the Nipples */}
+      <Nipple nipples={data.Nipples.slice().sort((a, b) => a - b)} middleOfShapeX={middleOfShapeX} middleOfShapeY={middleOfShapeY} offsetY={offsetY} totalDepth={data.Public.TotalWellDepth}
+      />
 
-          {/* Draw the packers */}
-          {packers.map((packer, index) => (
-            <Packer key={index}
-              {...packer} middleOfShapeX={middleOfShapeX} middleOfShapeY={middleOfShapeY} width={240} offsetY={offsetY} totalDepth={totalWellDepth}
-            />
-          ))}
-          {/* Draw the casings */}
-          {casings.map((casing, index) =>
+      {/* Draw the packers */}
+      {data.Packers.map((depth, index) => (
+        <Packer key={index}
+        packerDepth={depth} middleOfShapeX={middleOfShapeX} middleOfShapeY={middleOfShapeY} width={240} offsetY={offsetY} totalDepth={data.Public.TotalWellDepth}
+        />
+      ))}
+      {/* Draw the casings */}
+      {data.Casings.map((casing, index) =>
+      (
+        casing.show ?
           (
-            casing.show ?
-              (
-                <CasingLine key={index} {...casing} totalWellDepth={totalWellDepth} verticalWellDepth={verticalWellDepth} curveDegree={curveDegree} x={(closestCasingLineX - (index * sapaceBetweenCasings))} offsetY={offsetY} />
-              ) : (
-                null
-              )
-          ))}
-          {/* Draw the well cap */}
-          <WellCap />
-        </g>
+            <CasingLine key={index} {...casing} totalWellDepth={data.Public.TotalWellDepth} verticalWellDepth={data.Public.VerticalWellDepth} curveDegree={data.Public.CurveDegree} x={(closestCasingLineX - (index * sapaceBetweenCasings))} offsetY={offsetY} middleOfShapeX={middleOfShapeX} />
+          ) : (
+            null
+          )
+      ))}
+      {/* Draw the well cap */}
+      <WellCap />
+    </g>
   );
-  
+
 
   return (
 
-    <svg width={totalZoneWidth} height={offsetY + totalWellDepth} xmlns="http://www.w3.org/2000/svg">
-      <symbol id="cropped-part" viewBox={`${middleOfShapeX - (totalWellWidth / 2)} ${offsetY + verticalWellDepth} ${totalWellWidth} 1`}>
+    <svg width={totalZoneWidth} height={offsetY + data.Public.TotalWellDepth} xmlns="http://www.w3.org/2000/svg">
+      <symbol id="cropped-part" viewBox={`${middleOfShapeX - (data.Public.TotalWellWidth / 2)} ${offsetY + data.Public.VerticalWellDepth} ${data.Public.TotalWellWidth} 1`}>
         {generatedSVG}
       </symbol>
       {croppedSegments.map((item) => item)}
-      <symbol id="rotated-part" viewBox={`${middleOfShapeX - (totalWellWidth / 2)} ${offsetY + verticalWellDepth} ${totalWellWidth} ${totalWellDepth - verticalWellDepth}`}>
-      {generatedSVG}
+      <symbol id="rotated-part" viewBox={`${middleOfShapeX - (data.Public.TotalWellWidth / 2)} ${offsetY + data.Public.VerticalWellDepth} ${data.Public.TotalWellWidth} ${data.Public.TotalWellDepth - data.Public.VerticalWellDepth}`}>
+        {generatedSVG}
       </symbol>
       {rotatedSegment}
-      <symbol id="remain-part" viewBox={`0 0 ${totalZoneWidth} ${offsetY + verticalWellDepth}`}>
-      {generatedSVG}
+      <symbol id="remain-part" viewBox={`0 0 ${totalZoneWidth} ${offsetY + data.Public.VerticalWellDepth}`}>
+        {generatedSVG}
       </symbol>
       {remainSegment}
     </svg>

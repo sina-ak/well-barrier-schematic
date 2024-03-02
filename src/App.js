@@ -2,47 +2,38 @@ import './App.css';
 import WellComponent from './components/drilling-shape/drilling';
 
 function App() {
-  const wellData = {
-    surfaceEquipmentDepth: 300, // This is the vertical position of the surface equipment on the schematic
-    casings: [
-      {
-        label: 'Conductor Casing',
-        depth: 4000, // This should be the length of the casing
-      },
-      {
-        label: 'Surface Casing',
-        depth: 10000, // This should be the length of the casing
-      },
-      {
-        label: 'Intermediate Casing',
-        depth: 13000, // This should be the length of the casing
-      },
-      // Add other casings as necessary
+  const data = {
+    "Public": {
+      TotalWellWidth: 790,
+      TotalWellDepth: 2500,//total of well depth => vertical depth + horizontal depth 
+      VerticalWellDepth: 1050,
+      CurveDegree: 45
+    },
+    "Casings": [
+      { startOfTotalDepth: 0, endOfTotalDepth: 1500, label: 'perforation', show: true, hasPerforation: true },
+      { startOfTotalDepth: 0, endOfTotalDepth: 400, label: 'Surface Casing', show: true, hasPerforation: false },
+      { startOfTotalDepth: 200, endOfTotalDepth: 900, label: 'Intermediate Casing', show: false, hasPerforation: false }
     ],
-    tubings: [
-      {
-        label: 'Pk 2 Tubing',
-        depth: 14000, // This should be the length of the tubing
-      },
-      // Add other tubings as necessary
+    "Packers": [
+        700 , 1200  // packers depth
     ],
-    perforations: [
-      {
-        label: 'Zone#01 Perforation',
-        depthStart: 14500,
-        depthEnd: 15000,
-      },
-      // Add other perforations as necessary
+    "MainPipe": [
+      300, 200, 300, 100, 200, 300, 100, 200, 300, 100 //value of each tubing part (meter)
     ],
-    // Add other well components as necessary
-  };
-
-
-  const degree = -60;
+    "Nipples" : [
+      890, 400 // nipples depth
+    ],
+    "LineHangers" : [
+      1300, 1100  // lineHangers depth 
+    ],
+    "TRSSSV" : 550,
+    "ExpansionJoint":1200,
+  
+  }
   return (
     <div className="App">
       {/* <WellComponent wellData={wellData}/> */}
-      <WellComponent degree={degree}/>
+      <WellComponent data={data}/>
     </div>
   );
 }

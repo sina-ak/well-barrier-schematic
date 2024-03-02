@@ -19,12 +19,12 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
 
 
     useEffect(() => {
-
-        // Calculate the width of the label text
         if (labelRef.current) {
             setLabelWidth(labelRef.current.getComputedTextLength());
         }
-    }, [label]);
+    }, [label]); 
+
+
 
     // Perforation
     if (hasPerforation) {
@@ -36,8 +36,9 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
                 <Perforation key={i} x1={startX - 8} y1={positionY - (i * triangleSize)} x2={startX + offsetCasings + 8} y2={positionY - (i * triangleSize)} triangleSize={triangleSize} />
             )
         }
-
     }
+    
+    
 
     // Triangle points calculated based on the size of the triangle
     trianglePoints1 = `${startX - triangleSize},${endY} ${startX},${endY - triangleSize} ${startX},${endY}`;
@@ -69,7 +70,7 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
             {/* casing line2 */}
             <React.Fragment>
                 <line x1={startX + offsetCasings} y1={startY} x2={endX + offsetCasings} y2={endY} stroke="#999292" strokeWidth="16" />
-                <text ref={labelRef} x={startX + offsetCasings + labelOffset} y={endY - 10} fontSize="28">
+                <text x={startX + offsetCasings + labelOffset} y={endY - 10} fontSize="28">
                     {label}
                 </text>
             </React.Fragment>
@@ -81,4 +82,3 @@ const CasingLine = ({ startOfTotalDepth, endOfTotalDepth, label, show, hasPerfor
 };
 
 export default CasingLine;
-

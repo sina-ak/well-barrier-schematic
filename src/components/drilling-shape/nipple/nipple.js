@@ -1,17 +1,17 @@
 import React from "react";
 
-const Nipple = ({nipples, middleOfShapeX, middleOfShapeY, offsetY, totalDepth}) => {
+const Nipple = ({ nipples, middleOfShapeX}) => {
     const width = 120;
     let lineMargin = 10;
     const sideLength = 120; // Length of each side of the octagon
     const cornerRadius = 20; // Radius of the rounded corners
-    const halfSideLength = sideLength / 2+10;
-    const halfCornerRadius = cornerRadius / 2+ 30;
+    const halfSideLength = sideLength / 2 + 10;
+    const halfCornerRadius = cornerRadius / 2 + 30;
     let drawPipes = [];
 
-    nipples.forEach((depth, index) => {
-        const calcSize = offsetY + depth;
-        const calcRightRectWidth = 7 + (index * 7);
+    nipples.forEach((item) => {
+        const calcSize = item.depth + item.startOf;
+        const calcRightRectWidth = 7 + (item.nippleIndex * 7);
         const points = [
             middleOfShapeX - halfSideLength + cornerRadius, calcSize, // Top left corner
             middleOfShapeX + halfSideLength - cornerRadius, calcSize, // Top right corner
@@ -24,12 +24,18 @@ const Nipple = ({nipples, middleOfShapeX, middleOfShapeY, offsetY, totalDepth}) 
         ].join(',');
 
         const draw = (
-            <React.Fragment  key={index}>
-
-            <polygon points={points} rx="10" style={{ fill: '#afafaf', stroke: '#3d8ff4', strokeWidth: 3 }} />
-            <rect x={middleOfShapeX + halfSideLength +3} y={calcSize + halfCornerRadius} width={calcRightRectWidth} height={ sideLength - (2*halfCornerRadius)} rx="2" fill="#8ebfff" stroke="#3d8ff4" strokeWidth="3" />
-            <line x1={middleOfShapeX + halfSideLength+calcRightRectWidth +3} y1={offsetY} x2={middleOfShapeX + halfSideLength+calcRightRectWidth +3} y2={calcSize + halfCornerRadius + sideLength - (2*halfCornerRadius)} stroke="#3d8ff4" strokeWidth="3" />
+            <React.Fragment key={item.nippleIndex}>
+                {item.justLine ? (
+                    <line x1={middleOfShapeX + halfSideLength + calcRightRectWidth + 3} y1={item.startOf} x2={middleOfShapeX + halfSideLength + calcRightRectWidth + 3} y2={calcSize} stroke="#3d8ff4" strokeWidth="3" />
+                ) : (
+                    <React.Fragment>
+                        <polygon points={points} rx="10" style={{ fill: '#afafaf', stroke: '#3d8ff4', strokeWidth: 3 }} />
+                        <rect x={middleOfShapeX + halfSideLength + 3} y={calcSize + halfCornerRadius} width={calcRightRectWidth} height={sideLength - (2 * halfCornerRadius)} rx="2" fill="#8ebfff" stroke="#3d8ff4" strokeWidth="3" />
+                        <line x1={middleOfShapeX + halfSideLength + calcRightRectWidth + 3} y1={item.startOf} x2={middleOfShapeX + halfSideLength + calcRightRectWidth + 3} y2={calcSize + halfCornerRadius + sideLength - (2 * halfCornerRadius)} stroke="#3d8ff4" strokeWidth="3" />
+                    </React.Fragment>
+                )}
             </React.Fragment>
+
         );
         drawPipes.push(draw);
     });

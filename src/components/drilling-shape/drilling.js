@@ -150,8 +150,12 @@ const WellComponent = ({ data }) => {
 
 
   return (
-
-    <svg width={totalZoneWidth} height={totalInfo.offsetY + data.Public.TotalWellDepth} xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="100%"
+      height="100%"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={`0 0 ${totalZoneWidth} ${totalInfo.offsetY + data.Public.TotalWellDepth}`}
+    >
       <SvgHandler totalInfo={totalInfo} />
       {data.Public.CurveDegree > 0 ? (
         <CurveHandler totalInfo={totalInfo} />

@@ -7,7 +7,7 @@ function App() {
       TotalWellWidth: 790,
       TotalWellDepth: 2500,//total of well depth => vertical depth + horizontal depth 
       VerticalWellDepth: 1050,
-      CurveDegree: 110
+      CurveDegree: 90
     },
     "Casings": [
       { startOfTotalDepth: 0, endOfTotalDepth: 1400, label: 'perforation', show: true, hasPerforation: true },

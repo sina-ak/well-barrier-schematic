@@ -32,7 +32,7 @@ function App() {
 
   // }
   return (
-    <div className="App">
+    <div className="App" style={{width:"1000px",height:"1000px"}}>
       {/* <WellComponent data={data} /> */}
       <HoleSchematic />
     </div>

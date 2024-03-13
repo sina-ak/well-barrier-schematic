@@ -20,10 +20,10 @@ import DepthIndicator from "./depth-indicator/depthIndicator";
 //     { depth: 1100, inch: 5 },
 // ];
 
-const HoleSchematic = ({holesData}) => {
+const HoleSchematic = ({ holesData }) => {
     const offsetY = 100;
     const totalZoneWidth = 3000;
-    const middleOfShapeX = totalZoneWidth / 2 ;
+    const middleOfShapeX = totalZoneWidth / 2;
     const depression = 22;
     let sumSize = offsetY;
     let sum = 0;
@@ -31,15 +31,15 @@ const HoleSchematic = ({holesData}) => {
     const PipeCoverArray = [];
     const indicatorArray = [];
 
-    holesData.forEach((el, index) => { 
+    holesData.forEach((el, index) => {
         indicatorArray.push(
-            <DepthIndicator key={1000+index} depth={sumSize} label={sum}/>
+            <DepthIndicator key={1000 + index} depth={sumSize} label={sum} />
         )
         pipeArray.push(
-            <Pipe key={2000+index} startOf={sumSize} size={el.depth} index={index} middleOfShapeX={middleOfShapeX} />
+            <Pipe key={2000 + index} startOf={sumSize} size={el.depth} index={index} middleOfShapeX={middleOfShapeX} />
         )
         PipeCoverArray.push(
-            <PipeCover key={3000+index} startOf={sumSize} size={el.depth} index={index} middleOfShapeX={middleOfShapeX} />
+            <PipeCover key={3000 + index} startOf={sumSize} size={el.depth} index={index} middleOfShapeX={middleOfShapeX} />
         )
         if (el.depth - ((index + 1) * depression) > 100) {
             sumSize += (el.depth - ((index + 1) * depression));
@@ -47,12 +47,12 @@ const HoleSchematic = ({holesData}) => {
         else {
             sumSize += (el.depth - (el.depth / 3));
         }
-        sum+=el.depth;
+        sum += el.depth;
     })
 
     //ADD END POINTS
     indicatorArray.push(
-        <DepthIndicator depth={sumSize} label={sum}/>
+        <DepthIndicator depth={sumSize} label={sum} />
     )
 
 
@@ -65,11 +65,16 @@ const HoleSchematic = ({holesData}) => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox={`0 0 ${totalZoneWidth} ${sumSize + 300}`}
             >
-                {holesData.map((item,index)=>
-                    <SizeButton key={index} size={item.inch} index={index} middleOfShapeX={middleOfShapeX} />
-                )}
-                <rect x="0" y={offsetY - 50} width="150" height={sumSize + 100} fill="url(#verticalGradient)" rx="100" />
+                <rect x="400" y={offsetY - 50} width="150" height={sumSize + 100} fill="url(#verticalGradient)" rx="100" />
                 {indicatorArray.map(item => item)}
+            </svg>
+
+            <svg
+                width="100%"
+                height="100%"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox={`0 0 ${totalZoneWidth} ${sumSize + 300}`}
+            >
                 {pipeArray.map(item => item)}
                 {PipeCoverArray.reverse().map(item => item)}
                 <defs>
@@ -101,6 +106,18 @@ const HoleSchematic = ({holesData}) => {
                         <stop offset="100%" stopColor="#420000" />
                     </linearGradient>
                 </defs>
+            </svg>
+
+            <svg
+                width="100%"
+                height="100%"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox={`0 0 ${totalZoneWidth} ${sumSize + 300}`}
+            >
+                {holesData.map((item, index) =>
+                    <SizeButton key={index} size={item.inch} index={index} middleOfShapeX={middleOfShapeX} />
+                )}
+
             </svg>
         </div>
 

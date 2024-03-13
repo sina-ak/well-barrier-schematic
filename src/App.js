@@ -31,10 +31,24 @@ function App() {
   //   "ExpansionJoint": 1200,
 
   // }
+
+  const holesData = [
+    { depth: 300, inch: 36 },
+    { depth: 600, inch: 24 },
+    { depth: 200, inch: 17 },
+    { depth: 600, inch: 12 },
+    { depth: 800, inch: 16 },
+    { depth: 200, inch: 10 },
+    { depth: 400, inch: 9 },
+    { depth: 300, inch: 8 },
+    { depth: 500, inch: 7 },
+    { depth: 1100, inch: 5 },
+];
+
   return (
     <div className="App">
       {/* <WellComponent data={data} /> */}
-      <HoleSchematic />
+      <HoleSchematic holesData={holesData} />
     </div>
   );
 }

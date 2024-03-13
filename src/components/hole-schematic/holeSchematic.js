@@ -7,34 +7,39 @@ import DepthIndicator from "./depth-indicator/depthIndicator";
 
 
 
+// const holesData = [
+//     { depth: 300, inch: 36 },
+//     { depth: 600, inch: 24 },
+//     { depth: 200, inch: 17 },
+//     { depth: 600, inch: 12 },
+//     { depth: 800, inch: 16 },
+//     { depth: 200, inch: 10 },
+//     { depth: 400, inch: 9 },
+//     { depth: 300, inch: 8 },
+//     { depth: 500, inch: 7 },
+//     { depth: 1100, inch: 5 },
+// ];
 
-
-const HoleSchematic = () => {
+const HoleSchematic = ({holesData}) => {
     const offsetY = 100;
     const totalZoneWidth = 3000;
-    const middleOfShapeX = totalZoneWidth / 2 + 1000;
+    const middleOfShapeX = totalZoneWidth / 2 ;
     const depression = 22;
-    const holesData = [
-        { depth: 300, inch: 36 },
-        { depth: 600, inch: 24 },
-        { depth: 200, inch: 17 },
-        { depth: 600, inch: 12 },
-        { depth: 800, inch: 16 },
-        { depth: 200, inch: 10 },
-        { depth: 400, inch: 9 },
-        { depth: 300, inch: 8 },
-        { depth: 500, inch: 7 },
-        { depth: 1100, inch: 5 },
-    ];
     let sumSize = offsetY;
+    let sum = 0;
     const pipeArray = [];
     const PipeCoverArray = [];
-    holesData.forEach((el, index) => {
+    const indicatorArray = [];
+
+    holesData.forEach((el, index) => { 
+        indicatorArray.push(
+            <DepthIndicator key={1000+index} depth={sumSize} label={sum}/>
+        )
         pipeArray.push(
-            <Pipe key={index} startOf={sumSize} size={el.depth} index={index} middleOfShapeX={middleOfShapeX} />
+            <Pipe key={2000+index} startOf={sumSize} size={el.depth} index={index} middleOfShapeX={middleOfShapeX} />
         )
         PipeCoverArray.push(
-            <PipeCover key={index} startOf={sumSize} size={el.depth} index={index} middleOfShapeX={middleOfShapeX} />
+            <PipeCover key={3000+index} startOf={sumSize} size={el.depth} index={index} middleOfShapeX={middleOfShapeX} />
         )
         if (el.depth - ((index + 1) * depression) > 100) {
             sumSize += (el.depth - ((index + 1) * depression));
@@ -42,26 +47,29 @@ const HoleSchematic = () => {
         else {
             sumSize += (el.depth - (el.depth / 3));
         }
+        sum+=el.depth;
     })
 
-
+    //ADD END POINTS
+    indicatorArray.push(
+        <DepthIndicator depth={sumSize} label={sum}/>
+    )
 
 
 
     return (
         <div className="container" >
-            {/* <ellipse rx="100" ry="50" cx="120" cy="80"
-                style="fill:yellow;stroke:green;stroke-width:3" /> */}
             <svg
                 width="100%"
                 height="100%"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox={`0 0 ${totalZoneWidth} ${sumSize + 300}`}
             >
-                <rect x="0" y={offsetY} width="170" height={sumSize} fill="url(#verticalGradient)" rx="100" />
                 {holesData.map((item,index)=>
-                    <DepthIndicator key={index} depth={item.depth}/>
+                    <SizeButton key={index} size={item.inch} index={index} middleOfShapeX={middleOfShapeX} />
                 )}
+                <rect x="0" y={offsetY - 50} width="150" height={sumSize + 100} fill="url(#verticalGradient)" rx="100" />
+                {indicatorArray.map(item => item)}
                 {pipeArray.map(item => item)}
                 {PipeCoverArray.reverse().map(item => item)}
                 <defs>
@@ -94,11 +102,6 @@ const HoleSchematic = () => {
                     </linearGradient>
                 </defs>
             </svg>
-            <div className="sizePanel">
-                {holesData.map((item) =>
-                    <SizeButton>{item.inch}" Hole Section</SizeButton>
-                )}
-            </div>
         </div>
 
 
